@@ -61,5 +61,5 @@ class TestVarasto(unittest.TestCase):
         self.varasto.lisaa_varastoon(10)
         self.assertEqual(self.varasto.ota_varastosta(1000), 10)
 
-    def test_varasto_tekstina(self):
+    df test_varasto_tekstina(self):
         self.assertEqual(str(self.varasto), f"saldo = {self.varasto.saldo}, vielä tilaa {self.varasto.paljonko_mahtuu()}" )
