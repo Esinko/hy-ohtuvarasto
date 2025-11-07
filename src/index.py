@@ -5,8 +5,6 @@ def main():
     mehua = Varasto(100.0)
     olutta = Varasto(100.0, 20.2)
 
-    # gfgf gfdgdf dddddddddddddddddd gdfgfdg fdddddddddd gfdgdffddddddddddddddddddddddddddddddddddddddddd
-
     print("Luonnin jälkeen:")
     print(f"Mehuvarasto: {mehua}")
     print(f"Olutvarasto: {olutta}")
