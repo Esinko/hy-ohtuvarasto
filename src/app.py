@@ -107,8 +107,11 @@ def add_item():
     if request.method != 'POST':
         return render_template('add_item.html', **ctx)
 
-    warehouse_id = parse_float(request.form.get('warehouse_id', 0))
-    if warehouse_id is None or int(warehouse_id) not in warehouses:
+    try:
+        warehouse_id = int(request.form.get('warehouse_id', 0))
+    except ValueError:
+        warehouse_id = None
+    if warehouse_id is None or warehouse_id not in warehouses:
         flash('Warehouse not found', 'error')
         return render_template('add_item.html', **ctx)
 
@@ -122,14 +125,14 @@ def add_item():
         flash('Quantity must be a number', 'error')
         return render_template('add_item.html', **ctx)
 
-    warehouse = warehouses[int(warehouse_id)]
+    warehouse = warehouses[warehouse_id]
     success, error = warehouse.add_item(item_name, quantity)
     if not success:
         flash(error, 'error')
         return render_template('add_item.html', **ctx)
 
     flash(f'Added {quantity} of "{item_name}" to {warehouse.name}', 'success')
-    return redirect(url_for('warehouse_detail', warehouse_id=int(warehouse_id)))
+    return redirect(url_for('warehouse_detail', warehouse_id=warehouse_id))
 
 
 @app.route(
@@ -170,4 +173,4 @@ def delete_warehouse(warehouse_id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
