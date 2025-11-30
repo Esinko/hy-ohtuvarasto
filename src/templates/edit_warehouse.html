@@ -16,7 +16,9 @@
         <input type="number" id="capacity" name="capacity" step="0.1" min="{{ warehouse.saldo }}" value="{{ warehouse.tilavuus }}" required>
     </div>
 
-    <button type="submit">Save Changes</button>
-    <a href="{{ url_for('warehouse_detail', warehouse_id=warehouse_id) }}" class="btn">Cancel</a>
+    <div class="button-row">
+        <button type="submit">Save Changes</button>
+        <a href="{{ url_for('warehouse_detail', warehouse_id=warehouse_id) }}" class="btn">Cancel</a>
+    </div>
 </form>
 {% endblock %}

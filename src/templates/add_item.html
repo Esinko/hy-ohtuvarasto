@@ -27,8 +27,10 @@
         <input type="number" id="quantity" name="quantity" step="0.1" min="0.1" required>
     </div>
 
-    <button type="submit">Add Item</button>
-    <a href="{{ url_for('index') }}" class="btn">Cancel</a>
+    <div class="button-row">
+        <button type="submit">Add Item</button>
+        <a href="{{ url_for('index') }}" class="btn">Cancel</a>
+    </div>
 </form>
 {% else %}
 <div class="empty-state">

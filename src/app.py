@@ -51,8 +51,12 @@ def warehouse_detail(warehouse_id):
     warehouse = get_warehouse_or_redirect(warehouse_id)
     if not warehouse:
         return redirect(url_for('index'))
+    edit_mode = request.args.get('edit') == '1'
     return render_template(
-        'warehouse.html', warehouse=warehouse, warehouse_id=warehouse_id
+        'warehouse.html',
+        warehouse=warehouse,
+        warehouse_id=warehouse_id,
+        edit_mode=edit_mode
     )
 
 
@@ -156,6 +160,68 @@ def remove_item(warehouse_id, item_name):
         flash(f'Removed "{item_name}" from {warehouse.name}', 'success')
     else:
         flash(error, 'error')
+    return redirect(url_for('warehouse_detail', warehouse_id=warehouse_id))
+
+
+@app.route('/warehouse/<int:warehouse_id>/update-items', methods=['POST'])
+def update_items(warehouse_id):
+    """Update item quantities in a warehouse."""
+    warehouse = get_warehouse_or_redirect(warehouse_id)
+    if not warehouse:
+        return redirect(url_for('index'))
+
+    errors = []
+    changes_made = False
+
+    # Process each item's new quantity
+    for item_name in list(warehouse.items.keys()):
+        field_name = f'qty_{item_name}'
+        new_qty_str = request.form.get(field_name, '').strip()
+        if not new_qty_str:
+            continue
+
+        new_qty = parse_float(new_qty_str)
+        if new_qty is None:
+            errors.append(f'Invalid quantity for {item_name}')
+            continue
+
+        current_qty = warehouse.items[item_name]
+        if new_qty == current_qty:
+            continue
+
+        if new_qty < 0:
+            errors.append(f'Quantity for {item_name} cannot be negative')
+            continue
+
+        if new_qty == 0:
+            # Remove item completely
+            warehouse.ota_varastosta(current_qty)
+            del warehouse.items[item_name]
+            changes_made = True
+        elif new_qty < current_qty:
+            # Decrease quantity
+            diff = current_qty - new_qty
+            warehouse.ota_varastosta(diff)
+            warehouse.items[item_name] = new_qty
+            changes_made = True
+        else:
+            # Increase quantity
+            diff = new_qty - current_qty
+            if diff > warehouse.paljonko_mahtuu():
+                errors.append(f'Not enough space for {item_name}')
+                continue
+            warehouse.lisaa_varastoon(diff)
+            warehouse.items[item_name] = new_qty
+            changes_made = True
+
+    if errors:
+        for error in errors:
+            flash(error, 'error')
+    elif changes_made:
+        flash('Items updated successfully', 'success')
+    else:
+        flash('No changes made', 'success')
+
     return redirect(url_for('warehouse_detail', warehouse_id=warehouse_id))
 
 

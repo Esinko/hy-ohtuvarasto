@@ -16,7 +16,9 @@
         <input type="number" id="capacity" name="capacity" step="0.1" min="0.1" required>
     </div>
 
-    <button type="submit">Create Warehouse</button>
-    <a href="{{ url_for('index') }}" class="btn">Cancel</a>
+    <div class="button-row">
+        <button type="submit">Create Warehouse</button>
+        <a href="{{ url_for('index') }}" class="btn">Cancel</a>
+    </div>
 </form>
 {% endblock %}

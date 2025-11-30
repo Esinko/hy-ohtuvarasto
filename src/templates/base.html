@@ -221,6 +221,23 @@
             gap: 10px;
         }
 
+        .actions button,
+        .actions .btn {
+            flex: 1;
+            text-align: center;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .button-row button,
+        .button-row .btn {
+            flex: 1;
+            text-align: center;
+        }
+
         .empty-state {
             text-align: center;
             padding: 40px;
@@ -240,6 +257,31 @@
 
         .remove-form input[type="number"] {
             width: 80px;
+        }
+
+        .edit-mode-toggle {
+            margin-bottom: 15px;
+        }
+
+        .edit-items-form {
+            margin-bottom: 20px;
+        }
+
+        .item-row.editing {
+            background-color: #fffde7;
+        }
+
+        .item-row .edit-quantity {
+            width: 100px;
+            padding: 4px 8px;
+            border: 1px solid #ccc;
+            font-size: 0.9rem;
+        }
+
+        .item-row .item-current-qty {
+            color: #666;
+            font-size: 0.85rem;
+            margin-left: 5px;
         }
 
         footer {
