@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Warehouse Manager{% endblock %}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fafafa;
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        nav {
+            margin-top: 10px;
+        }
+
+        nav a {
+            color: #333;
+            text-decoration: none;
+            margin-right: 15px;
+            padding: 5px 0;
+            border-bottom: 1px solid transparent;
+        }
+
+        nav a:hover {
+            border-bottom: 1px solid #333;
+        }
+
+        .hero {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .hero h2 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .hero-meta {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .hero-meta span {
+            margin-right: 20px;
+        }
+
+        .flash-messages {
+            margin-bottom: 20px;
+        }
+
+        .flash {
+            padding: 10px 15px;
+            border: 1px solid;
+            margin-bottom: 10px;
+        }
+
+        .flash.success {
+            background-color: #e8f5e9;
+            border-color: #4caf50;
+            color: #2e7d32;
+        }
+
+        .flash.error {
+            background-color: #ffebee;
+            border-color: #f44336;
+            color: #c62828;
+        }
+
+        .warehouse-list {
+            list-style: none;
+        }
+
+        .warehouse-item {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: #fff;
+        }
+
+        .warehouse-item h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .warehouse-item h3 a {
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px dashed #333;
+        }
+
+        .warehouse-item h3 a:hover {
+            border-bottom-style: solid;
+        }
+
+        .warehouse-meta {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .item-list {
+            list-style: none;
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #ccc;
+            padding: 10px 15px;
+            margin-bottom: 5px;
+            background-color: #fff;
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-name {
+            font-weight: 500;
+        }
+
+        .item-quantity {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .item-actions form {
+            display: inline;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            background-color: #fff;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #333;
+        }
+
+        button, .btn {
+            padding: 8px 16px;
+            border: 1px solid #333;
+            background-color: #fff;
+            color: #333;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        button:hover, .btn:hover {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .btn-danger {
+            border-color: #c62828;
+            color: #c62828;
+        }
+
+        .btn-danger:hover {
+            background-color: #c62828;
+            color: #fff;
+        }
+
+        .btn-small {
+            padding: 4px 10px;
+            font-size: 0.8rem;
+        }
+
+        .actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            border: 1px dashed #ccc;
+        }
+
+        .inline-form {
+            display: inline;
+        }
+
+        .remove-form {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .remove-form input[type="number"] {
+            width: 80px;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding-top: 10px;
+            border-top: 1px solid #ccc;
+            font-size: 0.8rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Warehouse Manager</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">Overview</a>
+            <a href="{{ url_for('create_warehouse') }}">New Warehouse</a>
+            <a href="{{ url_for('add_item') }}">Add Item</a>
+        </nav>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        Warehouse Manager &mdash; Simple warehouse management
+    </footer>
+</body>
+</html>
