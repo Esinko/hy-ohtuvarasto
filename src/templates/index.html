@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Warehouses - Warehouse Manager{% endblock %}
+
+{% block content %}
+<h2>All Warehouses</h2>
+
+{% if warehouses %}
+    <ul class="warehouse-list">
+        {% for id, warehouse in warehouses.items() %}
+            <li class="warehouse-item">
+                <h3><a href="{{ url_for('warehouse_detail', warehouse_id=id) }}">{{ warehouse.name }}</a></h3>
+                <div class="warehouse-meta">
+                    <span>Items: {{ warehouse.get_item_count() }}</span>
+                    <span>Space left: {{ "%.1f"|format(warehouse.get_space_left_percent()) }}%</span>
+                    <span>Capacity: {{ warehouse.tilavuus }}</span>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <div class="empty-state">
+        <p>No warehouses yet.</p>
+        <p><a href="{{ url_for('create_warehouse') }}" class="btn">Create your first warehouse</a></p>
+    </div>
+{% endif %}
+{% endblock %}
